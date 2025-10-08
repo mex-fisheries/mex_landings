@@ -22,10 +22,10 @@ pacman::p_load(
 source(here("scripts", "00_setup.R"))
 
 # Load data --------------------------------------------------------------------
-stuart <- readRDS(here("data", "mex_landings", "clean", "mex_conapesca_avisos_2000_2019.rds")) |> 
+old <- readRDS(here("data", "clean", "mex_conapesca_avisos_2000_2019.rds")) |> 
   filter(year_cut <= 2017)
 
-apertura <- readRDS(here("data", "mex_landings", "clean", "mex_conapesca_apertura_2018_present.rds"))
+apertura <- readRDS(here("data", "clean", "mex_conapesca_apertura_2018_present.rds"))
 
 months <- tibble(month_cut = c("ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"),
                  month = 1:12) 
@@ -33,7 +33,7 @@ months <- tibble(month_cut = c("ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JU
 ## PROCESSING ##################################################################
 
 # Combine and select columns ---------------------------------------------------
-landings <- bind_rows(stuart,
+landings <- bind_rows(old,
                       apertura) |> 
   left_join(months, by = "month_cut")
 
@@ -72,4 +72,4 @@ final_landings <- landings_fixed_dates |>
 
 # Export file ------------------------------------------------------------------
 saveRDS(object = final_landings,
-        file = here("data", "mex_landings", "clean", "mex_landings_2000_present.rds"))
+        file = here("data", "clean", "mex_landings_2000_present.rds"))

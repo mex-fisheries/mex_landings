@@ -57,7 +57,7 @@ my_read <- function(path){
 }
 
 # Identify files ---------------------------------------------------------------
-files <- list.files(path = here("data", "mex_landings", "raw", "CONAPESCA_Avisos_2000-2019"),
+files <- list.files(path = here("data", "raw", "CONAPESCA_Avisos_2000-2019"),
                     pattern = "*\\.csv",
                     full.names = T)
 
@@ -69,10 +69,12 @@ dt <- map_dfr(files, my_read) %>%
   mutate(eu_rnpa = fix_rnpa(rnpa = eu_rnpa, length = 10),                       # Make sure EUs are 10 digits long
          vessel_rnpa = fix_rnpa(rnpa = vessel_rnpa),                            # and vessels are 8 digits long
          acuaculture_production = case_when(acuaculture_production == "" ~ NA_character_,
-                                            T ~ acuaculture_production))
+                                            acuaculture_production == "NO" ~ "no",
+                                            acuaculture_production == "SÍ" ~ "yes",
+                                            .default = acuaculture_production))
 
 ## EXPORT ######################################################################
 # Export file ------------------------------------------------------------------
 saveRDS(object = dt,
-        file = here("data", "mex_landings", "clean", "mex_conapesca_avisos_2000_2019.rds"))
+        file = here("data", "clean", "mex_conapesca_avisos_2000_2019.rds"))
 

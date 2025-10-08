@@ -19,8 +19,8 @@ pacman::p_load(
 )
 
 # Load data --------------------------------------------------------------------
-landings <- readRDS(here("data", "mex_landings", "clean", "mex_landings_2000_present.rds")) %>% 
-  filter(!acuaculture_production == "SÍ" | is.na(acuaculture_production))
+landings <- readRDS(here("data", "clean", "mex_landings_2000_present.rds")) %>% 
+  filter(!acuaculture_production == "yes" | is.na(acuaculture_production))
 
 ## PROCESSING ##################################################################
 
@@ -86,25 +86,25 @@ annual_by_landing_site <- landings %>%
 
 # Export monthly by vessel ----------------------------------------------------
 saveRDS(object = monthly_by_vessel,
-        file = here("data", "mex_landings", "clean", "mex_monthly_landings_by_vessel.rds"))
+        file = here("data", "clean", "mex_monthly_landings_by_vessel.rds"))
 
 # Export annual by vessel -----------------------------------------------------
 saveRDS(object = annual_by_vessel,
-        file = here("data", "mex_landings", "clean", "mex_annual_landings_by_vessel.rds"))
+        file = here("data", "clean", "mex_annual_landings_by_vessel.rds"))
 
 # Export monthly by eu --------------------------------------------------------
 saveRDS(object = monthly_by_eu,
-        file = here("data", "mex_landings", "clean", "mex_monthly_landings_by_eu.rds"))
+        file = here("data", "clean", "mex_monthly_landings_by_eu.rds"))
 
 # Export annual by eu ---------------------------------------------------------
 saveRDS(object = annual_by_eu,
-        file = here("data", "mex_landings", "clean", "mex_annual_landings_by_eu.rds"))
+        file = here("data", "clean", "mex_annual_landings_by_eu.rds"))
 
 # Export monthly by landing site -----------------------------------------------
 saveRDS(object = monthly_by_landing_site,
-        file = here("data", "mex_landings", "clean", "mex_monthly_landings_by_landing_site.rds"))
+        file = here("data", "clean", "mex_monthly_landings_by_landing_site.rds"))
 
 # Export annual by landing site ------------------------------------------------
 saveRDS(object = annual_by_landing_site,
-        file = here("data", "mex_landings", "clean", "mex_annual_landings_by_landing_site.rds"))
+        file = here("data", "clean", "mex_annual_landings_by_landing_site.rds"))
 

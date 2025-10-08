@@ -45,26 +45,22 @@ col.names = c("vessel_rnpa", "vessel_name",
               "coastline")
 
 # Load data --------------------------------------------------------------------
-files <- list.files(path = here("data", "mex_landings", "raw", "CONAPESCA"),
+files <- list.files(path = here("data", "raw", "CONAPESCA"),
                     pattern = "*\\.csv",
                     full.names = T)
 # Read files--------------------------------------------------------------------
-landings <- map_dfr(
-  files, 
-    ~readr::read_csv(
-      .x,
-      col_types = cols(.default = "c"), 
-      col_names = col.names, 
-      skip = 3, 
-      locale = locale(encoding = "UTF-8")
-    )
-) %>% 
+landings <- readr::read_csv(file = files,
+                            col_types = cols(.default = "c"), 
+                            col_names = col.names, 
+                            skip = 3, 
+                            locale = locale(encoding = "UTF-8"),
+                            id = "src_yr") %>% 
   janitor::clean_names() 
 
 ## PROCESSING ##################################################################
 
 # Rename and filter ------------------------------------------------------------
-landings_clean <- landings %>% 
+landings_clean <- landings |> 
   mutate(
     vessel_rnpa = stri_enc_toutf8(vessel_rnpa),
     eu_rnpa = stri_enc_toutf8(eu_rnpa),
@@ -74,12 +70,20 @@ landings_clean <- landings %>%
     landed_weight = as.numeric(str_replace_all(landed_weight, "[^0-9.]", "")),
     live_weight = as.numeric(str_replace_all(live_weight, "[^0-9.]", "")),
     value = as.numeric(str_replace_all(value, "[^0-9.]", "")),
-    year_cut = as.numeric(str_replace_all(year_cut, "[^0-9]", "")),
-    
     fleet = case_when(receipt_type == "MAYORES" ~ "large_scale",
                       receipt_type == "MENORES" ~ "small_scale",
-                      T ~ NA)
-  ) %>% 
+                      T ~ NA),
+    src_yr = str_extract(src_yr, "[:digit:]{4}"),
+    year_cut = str_replace_all(year_cut, "[^0-9]", ""),
+    year_cut = coalesce(year_cut, src_yr),
+    year_cut = as.numeric(year_cut),
+    acuaculture_production = case_when(str_detect(acuaculture_production, "NO") ~ "no",
+                                       str_detect(acuaculture_production, "S") ~ "yes",
+                                       acuaculture_production == "PRODUCCION ACUACULTURAL" ~ "yes",
+                                       .default = acuaculture_production),
+    eu_rnpa = fix_rnpa(eu_rnpa, length = 10),
+    vessel_rnpa = fix_rnpa(vessel_rnpa)) |> 
+  filter(!is.na(year_cut)) |> 
   select(
     state,
     office_name,
@@ -111,18 +115,10 @@ landings_clean <- landings %>%
     landed_weight,
     live_weight,
     price,
-    value ) %>% 
-  mutate(
-    year_cut = as.numeric(year_cut),
-    acuaculture_production = case_when(acuaculture_production == "SÃ\u008d" ~ "SÍ",
-                                       acuaculture_production == "NO" ~ "NO",
-                                       T ~ NA_character_),
-    eu_rnpa = fix_rnpa(eu_rnpa, length = 10),
-    vessel_rnpa = fix_rnpa(vessel_rnpa)) %>% 
-  filter(!is.na(year_cut))
+    value )
 
 ## EXPORT ######################################################################
 
 # Export file  000--------------------------------------------------------------
 saveRDS(object = landings_clean,
-        file = here("data", "mex_landings", "clean", "mex_conapesca_apertura_2018_present.rds"))
+        file = here("data", "clean", "mex_conapesca_apertura_2018_present.rds"))
