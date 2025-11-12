@@ -1,5 +1,8 @@
 # Landings data [~2000-2025 (partial)]
 
+[![DOI](https://zenodo.org/badge/1046471161.svg)](https://doi.org/10.5281/zenodo.17592474)
+
+
 ## About 
 This repository contains cleaned data on Mexican fisheries landings, by economic unit and vessel, between ~2000 and 2025 (partial). The data are derived from Mexico's National Commission of Fisheries and Aquaculture (CONAPESCA), but have been cleaned and standardized to facilitate analysis.
 
