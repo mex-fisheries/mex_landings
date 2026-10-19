@@ -8,7 +8,7 @@
 #
 # Cleaing data from: https://conapesca.gob.mx/wb/cona/avisos_arribo_cosecha_produccion
 #
-# Data last downloaded on June 9, 2023
+# Data last downloaded on July 30, 2026, 2023
 # 
 ################################################################################
 
