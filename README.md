@@ -1,4 +1,4 @@
-# Landings data [~2000-2025 (partial)]
+# Landings data [~2000-2026 (partial)]
 
 [![DOI](https://zenodo.org/badge/1046471161.svg)](https://doi.org/10.5281/zenodo.17592474)
 
@@ -10,7 +10,7 @@ This repository contains cleaned data on Mexican fisheries landings, by economic
 
 - CONAPESCA Avisos (2000-2019) - No link, obtained offline. These contain landing receipts by economic unit and species between 2000 and 2019.
 - [CONAPESCA](https://conapesca.gob.mx/wb/cona/avisos_arribo_cosecha_produccion) - These also contain landing receipts by economic unit and species, but between 2018 and present. A few years ago data were available as excel spreadsheets. Now they are available as CSV files.
-- [datos_abiertos](https://datos.gob.mx/busca/dataset/produccion-pesquera) - These contain monthly fisheries production by "office", between 2006 and 2024
+- [datos_abiertos](https://datos.gob.mx/busca/dataset/produccion-pesquera) - These contain monthly fisheries production by "office", between 2006 and 2024.
 
 ### "[Clean](data/clean)" data availability
 
